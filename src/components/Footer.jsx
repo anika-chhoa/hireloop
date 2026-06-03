@@ -15,16 +15,12 @@ export default function Footer() {
           {/* LEFT */}
           <div className="space-y-6">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 to-fuchsia-500">
-                <span className="text-xl font-bold text-white">P</span>
-              </div>
-
-              <div className="leading-none">
-                <h2 className="text-xl font-bold">Hiring</h2>
-                <h2 className="text-xl font-bold">Loop</h2>
-              </div>
-            </Link>
+           <Link href="/" className="flex items-center">
+            <h1 className="text-3xl font-bold">
+              <span className="text-sky-500">hire</span>
+              <span className="text-orange-500">loop</span>
+            </h1>
+          </Link>
 
             {/* Description */}
             <p className="max-w-xs leading-8 text-gray-400">
@@ -150,7 +146,7 @@ export default function Footer() {
 
         {/* BOTTOM */}
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-sm text-gray-500 md:flex-row">
-          <p>Copyright 2024 — Hire Loop</p>
+          <p>Copyright 2026 — Hire Loop</p>
 
           <div className="flex items-center gap-6">
             <Link href="/terms" className="transition hover:text-white">
