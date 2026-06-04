@@ -56,20 +56,20 @@ export default function Navbar() {
 
             {/* Auth */}
             <Link
-              href="/login"
+              href="/auth/signin"
               className="text-sm font-medium text-violet-400 hover:text-violet-300"
             >
               Sign In
             </Link>
 
-            <Button
-              as={Link}
-              href="/register"
-              radius="lg"
-              className="ml-6 bg-violet-600 px-6 text-white hover:bg-violet-700"
-            >
-              Get Started
-            </Button>
+            <Link href="/auth/signup">
+              <Button
+                radius="lg"
+                className="ml-6 bg-violet-600 px-6 text-white hover:bg-violet-700"
+              >
+                Get Started
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
