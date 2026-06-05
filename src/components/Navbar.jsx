@@ -1,9 +1,12 @@
 "use client";
 
+import { signOut, useSession } from "@/lib/auth-client";
 import { Button } from "@heroui/react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+
+
 
 const navLinks = [
   {
@@ -22,6 +25,12 @@ const navLinks = [
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session, isPending } = useSession();
+const user = session?.user;
+console.log(user)
+const handleSignout=async()=>{
+  await signOut()
+}
 
   return (
     <nav className="sticky top-0 z-50 w-full px-4 py-4">
@@ -55,12 +64,21 @@ export default function Navbar() {
             <div className="mx-8 h-5 w-px bg-white/20" />
 
             {/* Auth */}
-            <Link
-              href="/auth/signin"
-              className="text-sm font-medium text-violet-400 hover:text-violet-300"
-            >
-              Sign In
-            </Link>
+            {user ? (
+              <>
+                Hi, {user.name}!
+                <Button onClick={handleSignout} variant="ghost">
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <Link
+                href="/auth/signin"
+                className="text-sm font-medium text-violet-400 transition hover:text-violet-300"
+              >
+                Sign In
+              </Link>
+            )}
 
             <Link href="/auth/signup">
               <Button

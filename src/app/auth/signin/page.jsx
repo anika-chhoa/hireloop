@@ -112,8 +112,7 @@ export default function SigninPage() {
                     {/* Action Button */}
                     <Button
                         type="submit"
-                        color="primary"
-                        className="w-full font-semibold rounded-xl text-sm h-12"
+                        className="w-full font-semibold rounded-xl text-sm h-12 bg-violet-600 px-6 text-white hover:bg-violet-700"
                         isLoading={isLoading}
                         isDisabled={isLoading}
                     >
@@ -123,7 +122,7 @@ export default function SigninPage() {
                     {/* Navigation Option */}
                     <div className="text-center pt-4 border-t border-zinc-100 dark:border-zinc-800 mt-2 text-sm text-zinc-600 dark:text-zinc-400">
                         New to HireLoop?{" "}
-                        <Link href="/auth/signup" className="font-medium cursor-pointer text-sm text-blue-600 dark:text-blue-400">
+                        <Link href="/auth/signup" className="font-medium cursor-pointer text-sm text-violet-600 dark:text-violet-400">
                             Create an account
                         </Link>
                     </div>
