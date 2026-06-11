@@ -6,8 +6,6 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-
-
 const navLinks = [
   {
     label: "Browse Jobs",
@@ -26,11 +24,11 @@ const navLinks = [
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session, isPending } = useSession();
-const user = session?.user;
-console.log(user)
-const handleSignout=async()=>{
-  await signOut()
-}
+  const user = session?.user;
+  console.log("user:", user);
+  const handleSignout = async () => {
+    await signOut();
+  };
 
   return (
     <nav className="sticky top-0 z-50 w-full px-4 py-4">
@@ -117,21 +115,20 @@ const handleSignout=async()=>{
               <div className="my-3 h-px bg-white/10" />
 
               <Link
-                href="/login"
+                href="/auth/signin"
                 className="py-3 text-violet-400"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Sign In
               </Link>
 
-              <Button
-                as={Link}
-                href="/register"
+              <Link
+                href="/auth/signup"
                 radius="lg"
-                className="mt-3 bg-violet-600 text-white"
+                className="btn mt-3 bg-violet-600 text-white"
               >
                 Get Started
-              </Button>
+              </Link>
             </div>
           </div>
         )}

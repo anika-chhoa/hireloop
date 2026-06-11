@@ -15,8 +15,10 @@ import { useState } from "react";
 // Import updated Gravity UI icons (using 'At' instead of 'AtSign')
 import { signUp } from "@/lib/auth-client";
 import { At, Eye, EyeSlash, Person, ShieldKeyhole } from "@gravity-ui/icons";
+import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
+  const router = useRouter();
   // Form fields
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -36,6 +38,7 @@ export default function SignupPage() {
     setError("");
     setSuccess("");
     setIsLoading(true);
+    
 
     try {
       const { data, error: authError } = await signUp.email({
@@ -49,9 +52,11 @@ export default function SignupPage() {
         setError(authError.message || "Something went wrong during signup.");
       } else {
         setSuccess("Account created successfully! Welcome.");
+        alert("Account created successfully!");
         setName("");
         setEmail("");
         setPassword("");
+        router.push("/")
       }
     } catch (err) {
       setError("An unexpected network error occurred.");
