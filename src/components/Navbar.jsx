@@ -25,7 +25,7 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session, isPending } = useSession();
   const user = session?.user;
-  console.log("user:", user);
+  // console.log("user:", user);
   const handleSignout = async () => {
     await signOut();
   };
