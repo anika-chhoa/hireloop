@@ -1,6 +1,5 @@
 import { getCompanyJobs } from "@/lib/api/jobs";
 import { Table } from "@heroui/react";
-// Added Eye icon alongside existing icons
 import { Eye, PencilToSquare, TrashBin } from "@gravity-ui/icons";
 
 const RecruiterJobs = async () => {
@@ -85,16 +84,21 @@ const RecruiterJobs = async () => {
                       })}
                     </Table.Cell>
 
-                    {/* Location Badge */}
+                    {/* Dynamic Location Column */}
                     <Table.Cell>
                       {job.isRemote ? (
                         <span className="inline-flex items-center rounded-md bg-sky-500/10 px-2 py-1 text-xs font-medium text-sky-400 ring-1 ring-inset ring-sky-500/20">
                           Remote
                         </span>
                       ) : (
-                        <span className="inline-flex items-center rounded-md bg-gray-500/10 px-2 py-1 text-xs font-medium text-gray-400 ring-1 ring-inset ring-gray-500/10">
-                          On-site
-                        </span>
+                        <div className="flex flex-col gap-0.5">
+                          <span className="inline-flex w-fit items-center rounded-md bg-gray-500/10 px-2 py-1 text-xs font-medium text-gray-400 ring-1 ring-inset ring-gray-500/10 mb-1">
+                            On-site
+                          </span>
+                          <span className="text-sm text-zinc-300 pl-1 font-medium truncate max-w-[150px]" title={job.location}>
+                            {job.location || "Dhaka"}
+                          </span>
+                        </div>
                       )}
                     </Table.Cell>
 
