@@ -15,10 +15,12 @@ import { useState } from "react";
 // Import updated Gravity UI icons (using 'At' instead of 'AtSign')
 import { signUp } from "@/lib/auth-client";
 import { At, Eye, EyeSlash, Person, ShieldKeyhole } from "@gravity-ui/icons";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SignupPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/";
   // Form fields
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -38,7 +40,6 @@ export default function SignupPage() {
     setError("");
     setSuccess("");
     setIsLoading(true);
-    
 
     try {
       const { data, error: authError } = await signUp.email({
@@ -56,7 +57,7 @@ export default function SignupPage() {
         setName("");
         setEmail("");
         setPassword("");
-        router.push("/")
+        router.push(redirectTo);
       }
     } catch (err) {
       setError("An unexpected network error occurred.");
@@ -204,7 +205,7 @@ export default function SignupPage() {
           <div className="text-center pt-4 border-t border-zinc-100 dark:border-zinc-800 mt-2 text-sm text-zinc-600 dark:text-zinc-400">
             Already have an account?{" "}
             <Link
-              href="/auth/signin"
+              href={`/auth/signin?redirect=${redirectTo}`}
               className="font-medium cursor-pointer text-sm text-violet-600 dark:text-violet-400"
             >
               Sign in instead
