@@ -1,10 +1,11 @@
 import { getCompanyJobs } from "@/lib/api/jobs";
 import { Table } from "@heroui/react";
 import { Eye, PencilToSquare, TrashBin } from "@gravity-ui/icons";
+import { getLoggedInRecruiterCompany } from "@/lib/api/companies";
 
 const RecruiterJobs = async () => {
-  const companyId = "company_123";
-  const jobs = await getCompanyJobs(companyId);
+  const company = await getLoggedInRecruiterCompany();
+  const jobs = await getCompanyJobs(company._id);
 
   // Dynamic currency extractor for header
   const currencyHeader =

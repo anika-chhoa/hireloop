@@ -41,8 +41,6 @@ const listItemClasses =
   "text-zinc-300 hover:bg-zinc-900 hover:text-white px-3 py-2 rounded-lg text-sm cursor-pointer transition-colors outline-none data-[focused=true]:bg-zinc-900 data-[focused=true]:text-white";
 
 export default function CompanyProfile({ recruiter, recruiterCompany }) {
-  console.log(recruiter, recruiterCompany);
-
   // --- Hydration Mismatch Fix ---
   const [mounted, setMounted] = useState(false);
 
@@ -51,12 +49,20 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
   }, []);
 
   // --- States ---
-  // FIX 1: recruiterCompany is an array — grab the first element
-  const [company, setCompany] = useState(recruiterCompany?.[0] || null);
+  const [company, setCompany] = useState(recruiterCompany);
   const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors] = useState({});
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const [logoUrl, setLogoUrl] = useState("");
+  // Form reset key tracker
+  const [formKey, setFormKey] = useState(0);
+
+  // Sync logo tracking when entering edit states or company resolves
+  useEffect(() => {
+    if (company?.logo) {
+      setLogoUrl(company.logo);
+    }
+  }, [company]);
 
   // --- Cloudinary Integration Handler ---
   const handleLogoUpload = async (e) => {
@@ -77,14 +83,15 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
         {
           method: "POST",
           body: formData,
-        }
+        },
       );
 
       const data = await response.json();
 
       if (!response.ok) {
         throw new Error(
-          data.error?.message || `Upload failed with status: ${response.status}`
+          data.error?.message ||
+            `Upload failed with status: ${response.status}`,
         );
       }
 
@@ -98,7 +105,7 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
       alert(
         err instanceof Error
           ? err.message
-          : "Image upload failed. Try another format."
+          : "Image upload failed. Try another format.",
       );
     } finally {
       setUploadingLogo(false);
@@ -121,7 +128,8 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
     if (!industry) newErrors.industry = "Please select an industry";
     if (!location) newErrors.location = "Company location is required";
     if (!website) newErrors.website = "Company website is required";
-    if (!description) newErrors.description = "Please write a short description";
+    if (!description)
+      newErrors.description = "Please write a short description";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -142,12 +150,11 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
       recruiterId: recruiter.id,
     };
 
-    // FIX 2: was referencing undefined `result` — use `updatedCompany` instead
     const updatedCompany = await createCompany(newCompany);
-    setCompany(updatedCompany);
 
     if (updatedCompany) {
-      toast.success(`${newCompany.name} is created successfully`);
+      setCompany(updatedCompany);
+      toast.success(`${newCompany.name} updated successfully`);
     }
 
     setErrors({});
@@ -177,7 +184,7 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
     <div className="min-h-screen bg-[#0d0d0e] text-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         {/* VIEW 1: EMPTY STATE */}
-        {!company && !isEditing && (
+        {!company._id && !isEditing && (
           <div className="bg-[#121214] border border-zinc-900 rounded-xl p-12 shadow-2xl text-center space-y-6">
             <div className="mx-auto w-16 h-16 bg-zinc-900/50 border border-zinc-800 rounded-2xl flex items-center justify-center text-zinc-500">
               <Building2 size={28} />
@@ -193,7 +200,11 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
             </div>
             <Button
               radius="lg"
-              onClick={() => setIsEditing(true)}
+              onClick={() => {
+                setLogoUrl("");
+                setFormKey((prev) => prev + 1);
+                setIsEditing(true);
+              }}
               className="bg-violet-600 text-white font-semibold hover:bg-violet-700 px-6 transition-colors h-11 inline-flex items-center gap-2 shadow-lg shadow-violet-600/10"
             >
               <Plus size={16} /> Setup Profile
@@ -247,6 +258,8 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
                 radius="lg"
                 onClick={() => {
                   setLogoUrl(company.logo);
+                  // Dynamic key update resets fields cleanly with freshly updated records
+                  setFormKey((prev) => prev + 1);
                   setIsEditing(true);
                 }}
                 variant="bordered"
@@ -281,6 +294,7 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
             </div>
 
             <Form
+              key={formKey} // Force completely fresh DOM render with the latest default values
               onSubmit={handleSubmit}
               className="space-y-8"
               validationErrors={errors}
@@ -342,7 +356,7 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <TextField
                     name="companyName"
-                    defaultValue={company?.name}
+                    defaultValue={company?.name || ""}
                     isInvalid={!!errors.companyName}
                     className="flex flex-col gap-1 w-full"
                   >
@@ -364,7 +378,7 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
                     className={selectBoxClass}
                     name="industry"
                     defaultSelectedKeys={
-                      company ? [company.industry] : undefined
+                      company?.industry ? [company.industry] : undefined
                     }
                     isInvalid={!!errors.industry}
                   >
@@ -418,7 +432,7 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <TextField
                     name="location"
-                    defaultValue={company?.location}
+                    defaultValue={company?.location || ""}
                     isInvalid={!!errors.location}
                     className="flex flex-col gap-1 w-full"
                   >
@@ -444,7 +458,7 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
 
                   <TextField
                     name="website"
-                    defaultValue={company?.website}
+                    defaultValue={company?.website || ""}
                     isInvalid={!!errors.website}
                     className="flex flex-col gap-1 w-full"
                   >
@@ -475,7 +489,9 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
                     className={selectBoxClass}
                     name="employeeRange"
                     defaultSelectedKeys={
-                      company ? [company.employeeRange] : ["1-10"]
+                      company?.employeeRange
+                        ? [company.employeeRange]
+                        : ["1-10"]
                     }
                   >
                     <Label className="text-zinc-400 font-medium text-sm mb-1 block">
@@ -529,7 +545,7 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
 
                 <TextField
                   name="description"
-                  defaultValue={company?.description}
+                  defaultValue={company?.description || ""}
                   isInvalid={!!errors.description}
                   className="flex flex-col gap-1 w-full"
                 >
