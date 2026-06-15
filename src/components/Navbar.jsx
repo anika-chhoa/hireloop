@@ -12,7 +12,7 @@ const navLinks = [
     href: "/jobs",
   },
   {
-    label: "Company",
+    label: "Companies",
     href: "/companies",
   },
   {

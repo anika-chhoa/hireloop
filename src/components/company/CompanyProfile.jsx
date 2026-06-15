@@ -213,7 +213,7 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
         )}
 
         {/* VIEW 2: SHOW COMPANY DETAILS */}
-        {company && !isEditing && (
+        {company._id && !isEditing && (
           <div className="bg-[#121214] border border-zinc-900 rounded-xl p-8 shadow-2xl space-y-8">
             <div className="flex flex-col sm:flex-row justify-between items-start gap-4 border-b border-zinc-800 pb-6">
               <div className="flex items-start gap-4">
