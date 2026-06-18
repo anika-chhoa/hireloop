@@ -9,6 +9,7 @@ export default function PricingPage() {
 
   const seekerPlans = [
     {
+      id: "seeker_free",
       name: "Free",
       price: "$0",
       period: "/forever",
@@ -23,8 +24,9 @@ export default function PricingPage() {
       gradient: false,
     },
     {
+      id: "seeker_pro",
       name: "Pro",
-      price: "$19",
+      price: "$19.99",
       period: "/month",
       description: "Accelerate your active job hunt.",
       features: [
@@ -38,8 +40,9 @@ export default function PricingPage() {
       popular: true,
     },
     {
+      id: "seeker_premium",
       name: "Premium",
-      price: "$39",
+      price: "$39.99",
       period: "/month",
       description: "Maximum visibility and unlimited access.",
       features: [
@@ -56,6 +59,7 @@ export default function PricingPage() {
 
   const recruiterPlans = [
     {
+      id: "recruiter_free",
       name: "Free",
       price: "$0",
       period: "/forever",
@@ -70,8 +74,9 @@ export default function PricingPage() {
       gradient: false,
     },
     {
+      id: "recruiter_growth",
       name: "Growth",
-      price: "$49",
+      price: "$49.99",
       period: "/month",
       description: "Scale up your recruitment power.",
       features: [
@@ -85,8 +90,9 @@ export default function PricingPage() {
       popular: true,
     },
     {
+      id: "recruiter_enterprise",
       name: "Enterprise",
-      price: "$149",
+      price: "$149.99",
       period: "/month",
       description: "Robust tools for demanding talent teams.",
       features: [
@@ -221,6 +227,11 @@ export default function PricingPage() {
 
               <div>
                 <form action="/api/checkout_sessions" method="POST">
+                  <input
+                    type="hidden"
+                    name="plan_id"
+                    value={plan.id}
+                  />
                   <section>
                     <button
                       className={`w-full text-xs font-semibold py-3 rounded-xl transition-all cursor-pointer ${

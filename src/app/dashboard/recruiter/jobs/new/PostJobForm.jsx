@@ -117,12 +117,12 @@ export default function PostJobForm({ company }) {
             Posting as:{" "}
             <span className="font-semibold text-zinc-300">{company.name}</span>
             <span className="text-emerald-500 font-medium bg-emerald-950/30 px-1.5 py-0.5 rounded border border-emerald-900/50">
-              Approved
+              {company.status}
             </span>
           </div>
         </div>
-
-        <Form
+        {company.status !== "Approved" && <div>Please wait for the approval</div>}
+         {company.status==="Approved" && <Form
           onSubmit={handleSubmit}
           className="space-y-8"
           validationErrors={errors}
@@ -473,7 +473,7 @@ export default function PostJobForm({ company }) {
               Post Job
             </Button>
           </div>
-        </Form>
+        </Form>}
       </div>
     </div>
   );

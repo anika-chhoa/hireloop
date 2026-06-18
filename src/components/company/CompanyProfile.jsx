@@ -146,9 +146,10 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
       logo:
         logoUrl ||
         "https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=100&auto=format&fit=crop&q=60",
-      status: company?.status || "Pending",
+      status: company && company?.status ? company?.status : "Pending",
       recruiterId: recruiter.id,
     };
+    console.log(newCompany)
 
     const updatedCompany = await createCompany(newCompany);
 

@@ -40,6 +40,7 @@ export default function SignupPage() {
     setError("");
     setSuccess("");
     setIsLoading(true);
+    const plan=role==="seeker"?"seeker_free":"recruiter_free"
 
     try {
       const { data, error: authError } = await signUp.email({
@@ -47,6 +48,7 @@ export default function SignupPage() {
         password,
         name,
         role,
+        plan
       });
 
       if (authError) {

@@ -6,6 +6,7 @@ import { ArrowLeft, ShieldAlert } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import JobApply from "./JobApply";
+import { getPlanById } from "@/lib/api/plans";
 
 const ApplyJob = async ({ params }) => {
   const { id } = await params;
@@ -69,17 +70,15 @@ const ApplyJob = async ({ params }) => {
       </div>
     );
   }
-  const plan = {
-    name: "Free",
-    maxApplicationsPerMonth: 3,
-  };
-
+  const plan=await getPlanById(user?.plan||"seeker_free")
+  
+ 
   return (
     <div className="min-h-screen bg-[#030303] py-12 px-4 flex flex-col items-center justify-center">
       {/* Header Section */}
 
       {/* Form Component */}
-      {applications.length < plan.maxApplicationsPerMonth ? (
+      {applications.length < plan.maxApplicationPerMonth ? (
         <div>
           <div className="w-full max-w-7xl mx-auto text-center mb-6">
             <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
@@ -97,7 +96,7 @@ const ApplyJob = async ({ params }) => {
             </p>
             <p>
               You have applied so far: {applications.length} out of{" "}
-              {plan.maxApplicationsPerMonth}
+              {plan.maxApplicationPerMonth}
             </p>
           </div>
           <div className="w-full max-w-7xl">
@@ -146,7 +145,7 @@ const ApplyJob = async ({ params }) => {
             <div className="bg-gradient-to-r from-red-500 to-orange-500 h-full rounded-full w-full" />
           </div>
           <div className="text-[11px] text-gray-500 mt-2">
-            Usage: {applications.length} / {plan.maxApplicationsPerMonth}{" "}
+            Usage: {applications.length} / {plan.maxApplicationPerMonth}{" "}
             standard applications
           </div>
 

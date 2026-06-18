@@ -12,8 +12,12 @@ const navLinks = [
     href: "/jobs",
   },
   {
+    label: "All Companies",
+    href: "/dashboard/admin/companies",
+  },
+  {
     label: "Companies",
-    href: "/companies",
+    href: "/dashboard/recruiter/company",
   },
   {
     label: "Pricing",
